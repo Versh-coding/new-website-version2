@@ -647,6 +647,100 @@
     }
   }
 
+  // ==========================================
+  // 6. 影片播放控制器 (Hero Video Controller - 848x480 SD)
+  // ==========================================
+  function initHeroVideo() {
+    const video = document.getElementById('heroVideo');
+    const playToggleBtn = document.getElementById('videoPlayToggle');
+    const playToggleIcon = document.getElementById('videoToggleIcon');
+    const muteToggleBtn = document.getElementById('videoMuteToggle');
+    const muteToggleIcon = document.getElementById('videoMuteIcon');
+
+    if (!video) return;
+
+    function updatePlayIcon() {
+      if (playToggleIcon) {
+        playToggleIcon.textContent = video.paused ? '▶️' : '⏸️';
+      }
+      if (playToggleBtn) {
+        playToggleBtn.setAttribute('title', video.paused ? '播放影片' : '暫停影片');
+        playToggleBtn.setAttribute('aria-label', video.paused ? '播放影片' : '暫停影片');
+      }
+    }
+
+    function updateMuteIcon() {
+      if (muteToggleIcon) {
+        muteToggleIcon.textContent = video.muted ? '🔇' : '🔊';
+      }
+      if (muteToggleBtn) {
+        muteToggleBtn.setAttribute('title', video.muted ? '開啟聲音' : '靜音影片');
+        muteToggleBtn.setAttribute('aria-label', video.muted ? '開啟聲音' : '靜音影片');
+      }
+    }
+
+    if (playToggleBtn) {
+      playToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (video.paused) {
+          video.play().then(updatePlayIcon).catch(() => {});
+        } else {
+          video.pause();
+          updatePlayIcon();
+        }
+      });
+    }
+
+    if (muteToggleBtn) {
+      muteToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        video.muted = !video.muted;
+        updateMuteIcon();
+        showToast(video.muted ? '🔇 影片已靜音' : '🔊 影片聲音已開啟', 'info');
+      });
+    }
+
+    // 點擊影片本體亦可播放/暫停
+    video.addEventListener('click', () => {
+      if (video.paused) {
+        video.play().then(updatePlayIcon).catch(() => {});
+      } else {
+        video.pause();
+        updatePlayIcon();
+      }
+    });
+
+    video.addEventListener('play', updatePlayIcon);
+    video.addEventListener('pause', updatePlayIcon);
+
+    // 偵測影片錯誤 (若尚未放置 video.mp4 檔案)
+    video.addEventListener('error', () => {
+      const fallbackNotice = document.getElementById('videoFallbackNotice');
+      if (fallbackNotice) {
+        fallbackNotice.style.display = 'flex';
+      }
+    });
+
+    video.addEventListener('loadeddata', () => {
+      const fallbackNotice = document.getElementById('videoFallbackNotice');
+      if (fallbackNotice) {
+        fallbackNotice.style.display = 'none';
+      }
+      updatePlayIcon();
+      updateMuteIcon();
+    });
+
+    // 嘗試自動播放
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        updatePlayIcon();
+      }).catch(() => {
+        updatePlayIcon();
+      });
+    }
+  }
+
   // 頁面加載完成後啟動
   document.addEventListener('DOMContentLoaded', () => {
     initNav();
@@ -656,6 +750,7 @@
     initReminders();
     initKnowledge();
     initQuiz();
+    initHeroVideo();
   });
 
 })();
