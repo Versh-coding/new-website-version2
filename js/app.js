@@ -648,7 +648,7 @@
   }
 
   // ==========================================
-  // 6. 影片播放控制器 (Hero Video Controller - 848x480 SD)
+  // 6. 影片播放控制器 (Hero Video Controller - 654x480 SD)
   // ==========================================
   function initHeroVideo() {
     const video = document.getElementById('heroVideo');
