@@ -424,11 +424,11 @@ button, input {
   border: 4px solid white;
 }
 
-/* ==================== 848x480 SD 影片容器與樣式 ==================== */
+/* ==================== 654x480 SD 影片容器與樣式 ==================== */
 .hero-video-container {
-  aspect-ratio: 848 / 480;
+  aspect-ratio: 654 / 480;
   width: 100%;
-  max-width: 848px;
+  max-width: 654px;
   background-color: #0b1329;
   position: relative;
   display: flex;
@@ -447,7 +447,7 @@ button, input {
   transition: filter 0.3s ease;
 }
 
-/* 848x480 SD 規格標籤 */
+/* 654x480 SD 規格標籤 */
 .video-sd-badge {
   position: absolute;
   top: 1rem;
